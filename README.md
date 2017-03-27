@@ -44,6 +44,10 @@ Example
 =======
 
 ```java
+import net.hep.ami.jami.Client;
+
+...
+
 try
 {
 	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443);
