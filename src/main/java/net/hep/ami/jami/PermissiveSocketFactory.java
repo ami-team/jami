@@ -8,7 +8,7 @@ public class PermissiveSocketFactory
 {
 	/*---------------------------------------------------------------------*/
 
-	private static class PermissiveX509TrustManager implements X509TrustManager
+	private static final class PermissiveX509TrustManager implements X509TrustManager
 	{
 		@Override
 		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException

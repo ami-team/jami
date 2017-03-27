@@ -86,13 +86,6 @@ public class Client
 
 	/*---------------------------------------------------------------------*/
 
-	private String cookie()
-	{
-		return cookie(null);
-	}
-
-	/*---------------------------------------------------------------------*/
-
 	private String cookie(String value)
 	{
 		if(value == null)
@@ -183,12 +176,15 @@ public class Client
 			/*-------------------------------------------------------------*/
 
 			connection.setSSLSocketFactory(m_socketFactory);
+
+			/*-------------------------------------------------------------*/
+
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF");
 			connection.setRequestProperty("Content-Length", String.valueOf(data.length()));
+			connection.setRequestProperty("Cookie", cookie(null));
 			connection.setRequestProperty("Connection", "Close");
 			connection.setRequestProperty("User-Agent", "jami");
-			connection.setRequestProperty("Cookie", cookie());
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 
