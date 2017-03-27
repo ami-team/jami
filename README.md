@@ -56,7 +56,7 @@ mvn install
 Documentation
 =============
 
-[Javadoc page](https://www.cern.ch/ami/jami/).
+[Javadoc page](https://www.cern.ch/ami/clients/jami/).
 
 Example
 =======
