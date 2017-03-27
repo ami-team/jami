@@ -21,7 +21,7 @@ public class Client
 
 	/*---------------------------------------------------------------------*/
 
-	private final String m_tcfn;
+	private final String m_tcfp;
 	private final String m_host;
 	private final String m_path;
 	private final int    m_port;
@@ -57,7 +57,7 @@ public class Client
 	{
 		/*-----------------------------------------------------------------*/
 
-		m_tcfn = System.getProperty("java.io.tmpdir") + File.pathSeparator + "ami.cookie." + (sessionName != null ? sessionName : "global");
+		m_tcfp = System.getProperty("java.io.tmpdir") + File.pathSeparator + "ami.cookie." + (sessionName != null ? sessionName : "global");
 
 		m_host = host;
 		m_path = path;
@@ -86,6 +86,13 @@ public class Client
 
 	/*---------------------------------------------------------------------*/
 
+	private String cookie()
+	{
+		return cookie(null);
+	}
+
+	/*---------------------------------------------------------------------*/
+
 	private String cookie(String value)
 	{
 		if(value == null)
@@ -94,7 +101,7 @@ public class Client
 
 			try
 			{
-				bufferedReader = new BufferedReader(new FileReader(m_tcfn));
+				bufferedReader = new BufferedReader(new FileReader(m_tcfp));
 
 				try {
 					value = bufferedReader.readLine();
@@ -112,7 +119,7 @@ public class Client
 		{
 			try
 			{
-				BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(m_tcfn));
+				BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(m_tcfp));
 
 				try {
 					bufferedWriter.write(value);
@@ -136,7 +143,7 @@ public class Client
 	 * Executes a command.
 	 * @param command The command name.
 	 * @param arguments The map of arguments.
-	 * @return A String containing the command result.
+	 * @return A JSON string containing the command result.
 	 * @throws Exception If unable to execute the command.
 	 */
 
@@ -180,8 +187,8 @@ public class Client
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF");
 			connection.setRequestProperty("Content-Length", String.valueOf(data.length()));
 			connection.setRequestProperty("Connection", "Close");
-			connection.setRequestProperty("Cookie", cookie(null));
 			connection.setRequestProperty("User-Agent", "jami");
+			connection.setRequestProperty("Cookie", cookie());
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 

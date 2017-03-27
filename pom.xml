@@ -10,9 +10,9 @@
 	<url>http://www.cern.ch/ami/</url>
 
 	<scm>
-		<connection>scm:git:https://github.in2p3.fr/ami-team/jami.git</connection>
-		<developerConnection>scm:git:git@github.in2p3.fr:ami-team/jami.git</developerConnection>
-		<url>https://github.in2p3.fr/ami-team/jami/</url>
+		<connection>scm:git:https://github.com/ami-team/jami.git</connection>
+		<developerConnection>scm:git:git@github.com:ami-team/jami.git</developerConnection>
+		<url>https://github.com/ami-team/jami/</url>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -80,6 +80,9 @@
 				</executions>
 				<configuration>
 					<bottom><![CDATA[<small>Copyright © 2000-2017 <a href="http://www.cern.ch/ami/" target="_blank">AMI / LPSC / IN2P3</a>. All rights reserved.</small><br /><small><a href="http://lpsc.in2p3.fr/" target="_blank">LPSC Grenoble</a> - 53, avenue des Martyrs 38026 Grenoble cedex.</small>]]></bottom>
+					<sourceFileExcludes>
+						<exclude>net/hep/ami/jami/PermissiveSocketFactory.java</exclude>
+					</sourceFileExcludes>
 					<notree>true</notree>
 					<nodeprecated>true</nodeprecated>
 				</configuration>
