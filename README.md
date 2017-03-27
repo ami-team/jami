@@ -44,7 +44,7 @@ mvn -version
 mvn install
 ```
 
- * Configure your Maven project:
+ * Configuring your Maven project:
 ```xml
 <dependency>
 	<groupId>net.hep.ami</groupId>
