@@ -44,6 +44,15 @@ mvn -version
 mvn install
 ```
 
+ * Configure your Maven project:
+```xml
+<dependency>
+	<groupId>net.hep.ami</groupId>
+	<artifactId>jami</artifactId>
+	<version>LATEST</version>
+</dependency>
+```
+
 Documentation
 =============
 
