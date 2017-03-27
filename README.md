@@ -52,11 +52,9 @@ try
 {
 	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443);
 
-	hMap<String, String> arguments = new HashMap<>();
+	Map<String, String> arguments = new HashMap<>();
 
-	String result = client.execute("GetSessionInfo", arguments);
-
-	System.out.println(result);
+	System.out.println(client.execute("GetSessionInfo", arguments));
 }
 catch(Exception e)
 {
