@@ -74,8 +74,8 @@ catch(Exception e)
 [License]:http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt
 [License img]:https://img.shields.io/badge/license-CeCILL--C-blue.svg
 
-[Dependency Status]:https://www.versioneye.com/user/projects/584f34ca5d8a5500433b8bec/
-[Dependency Status img]:https://www.versioneye.com/user/projects/584f34ca5d8a5500433b8bec/badge.svg?style=flat
+[Dependency Status]:https://www.versioneye.com/user/projects/58d9287ed6c98d0044054477/
+[Dependency Status img]:https://www.versioneye.com/user/projects/58d9287ed6c98d0044054477/badge.svg?style=flat
 
 [Maven Central]:https://maven-badges.herokuapp.com/maven-central/net.hep.ami/jami
 [Maven Central img]:https://maven-badges.herokuapp.com/maven-central/net.hep.ami/jami/badge.svg
