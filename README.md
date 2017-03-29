@@ -67,12 +67,6 @@ import net.hep.ami.jami.Client;
 
 ...
 
-String host = "ami.in2p3.fr";
-String path = "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd";
-
-...
-
-
 try
 {
 	Client client = new Client(host, path, 443);
