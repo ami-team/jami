@@ -61,7 +61,7 @@ Documentation
 Example
 =======
 
-Authenticating with login and password:
+Authenticating by login and password:
 ```java
 import net.hep.ami.jami.Client;
 
@@ -95,7 +95,7 @@ catch(Exception e)
 }
 ```
 
-Authenticating with X509 certificate:
+Authenticating by X509 certificate:
 ```java
 KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
 ...
