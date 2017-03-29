@@ -98,7 +98,8 @@ catch(Exception e)
 Authenticating by X509 certificate:
 ```java
 KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
-...
+keyManagerFactory.init(keyStore, keyStorePassword.toCharArray());
+
 Client client = new Client(host, path, 443, "anArbitrarySessionName", keyManagerFactory.getKeyManagers());
 ```
 
