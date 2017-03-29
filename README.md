@@ -67,9 +67,15 @@ import net.hep.ami.jami.Client;
 
 ...
 
+String host = "ami.in2p3.fr";
+String path = "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd";
+
+...
+
+
 try
 {
-	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443);
+	Client client = new Client(host, path, 443);
 
 	/**/
 
@@ -97,27 +103,9 @@ catch(Exception e)
 
 Authenticating with X509 certificate:
 ```java
-import net.hep.ami.jami.Client;
-
+KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
 ...
-
-try
-{
-	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443, "mySessionName", new KeyManager[] {myKeyManager});
-
-	/**/
-
-	Map<String, String> arguments = new HashMap<>();
-
-	arguments.put("myArgument1", "myValue1"); 
-	arguments.put("myArgument2", "myValue2");
-	
-	System.out.println(client.execute("myCommand", arguments));
-}
-catch(Exception e)
-{
-	System.err.println(e.getMessage());
-}
+Client client = new Client(host, path, 443, "anArbitrarySessionName", keyManagerFactory.getKeyManagers());
 ```
 
 [License]:http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt
