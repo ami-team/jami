@@ -86,7 +86,7 @@ catch(Exception e)
 }
 ```
 
-Only provide `AMIUser` and `AMIPass` the first command in order to initialize the session.
+⚠ Only provide `AMIUser` and `AMIPass` the first command in order to initialize the session.
 
 Authenticating with X509 certificate:
 ```java
