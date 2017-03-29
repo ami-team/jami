@@ -175,16 +175,20 @@ public class Client
 		{
 			/*-------------------------------------------------------------*/
 
-			connection.setSSLSocketFactory(m_socketFactory);
-
-			/*-------------------------------------------------------------*/
-
 			connection.setRequestMethod("POST");
+
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF");
 			connection.setRequestProperty("Content-Length", String.valueOf(data.length()));
+
 			connection.setRequestProperty("Cookie", cookie(null));
 			connection.setRequestProperty("Connection", "Close");
 			connection.setRequestProperty("User-Agent", "jami");
+
+			/*-------------------------------------------------------------*/
+
+			connection.setSSLSocketFactory(m_socketFactory);
+			connection.setConnectTimeout(1500);
+			connection.setReadTimeout(1500);
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 
