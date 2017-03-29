@@ -71,12 +71,16 @@ try
 {
 	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443);
 
+	/**/
+
 	Map<String, String> arguments1 = new HashMap<>();
 
 	arguments1.put("AMIUser", "myLogin"); 
 	arguments1.put("AMIPass", "myPassword");
 	
 	System.out.println(client.execute("GetSessionInfo", arguments1));
+
+	/**/
 
 	Map<String, String> arguments2 = new HashMap<>();
 
@@ -99,7 +103,9 @@ import net.hep.ami.jami.Client;
 
 try
 {
-	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443, "mySession", new KeyManager[] {myKeyManager});
+	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443, "mySessionName", new KeyManager[] {myKeyManager});
+
+	/**/
 
 	Map<String, String> arguments = new HashMap<>();
 
