@@ -61,6 +61,7 @@ Documentation
 Example
 =======
 
+Authenticating with login and password:
 ```java
 import net.hep.ami.jami.Client;
 
@@ -72,7 +73,36 @@ try
 
 	Map<String, String> arguments = new HashMap<>();
 
+	arguments.put("AMIUser", "<myLogin>); 
+	arguments.put("AMIPass", "<myPassword>);
+	
 	System.out.println(client.execute("GetSessionInfo", arguments));
+
+	...
+}
+catch(Exception e)
+{
+	System.err.println(e.getMessage());
+}
+```
+
+Only provide `AMIUser` and `AMIPass` the first command in order to initialize the session.
+
+Authenticating with X509 certificate:
+```java
+import net.hep.ami.jami.Client;
+
+...
+
+try
+{
+	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443, "mySession", new KeyManager[] {myKeyManager});
+
+	Map<String, String> arguments = new HashMap<>();
+
+	System.out.println(client.execute("GetSessionInfo", arguments));
+
+	...
 }
 catch(Exception e)
 {
