@@ -71,22 +71,25 @@ try
 {
 	Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443);
 
-	Map<String, String> arguments = new HashMap<>();
+	Map<String, String> arguments1 = new HashMap<>();
 
-	arguments.put("AMIUser", "<myLogin>); 
-	arguments.put("AMIPass", "<myPassword>);
+	arguments1.put("AMIUser", "myLogin"); 
+	arguments1.put("AMIPass", "myPassword");
 	
-	System.out.println(client.execute("GetSessionInfo", arguments));
+	System.out.println(client.execute("GetSessionInfo", arguments1));
 
-	...
+	Map<String, String> arguments2 = new HashMap<>();
+
+	arguments2.put("myArgument1", "myValue1"); 
+	arguments2.put("myArgument2", "myValue2");
+	
+	System.out.println(client.execute("myCommand", arguments2));
 }
 catch(Exception e)
 {
 	System.err.println(e.getMessage());
 }
 ```
-
-⚠ Only provide `AMIUser` and `AMIPass` the first command in order to initialize the session.
 
 Authenticating with X509 certificate:
 ```java
@@ -100,9 +103,10 @@ try
 
 	Map<String, String> arguments = new HashMap<>();
 
-	System.out.println(client.execute("GetSessionInfo", arguments));
-
-	...
+	arguments.put("myArgument1", "myValue1"); 
+	arguments.put("myArgument2", "myValue2");
+	
+	System.out.println(client.execute("myCommand", arguments));
 }
 catch(Exception e)
 {
