@@ -41,11 +41,13 @@ public class PermissiveSocketFactory
 		SSLSocketFactory tmp;
 
 		/*-----------------------------------------------------------------*/
+		/* SSL                                                             */
+		/*-----------------------------------------------------------------*/
 
 		try
 		{
 			/*-------------------------------------------------------------*/
-			/* CREATE SSL CONTEXT                                          */
+			/* CREATE CONTEXT                                              */
 			/*-------------------------------------------------------------*/
 
 			SSLContext sslContext = SSLContext.getInstance("SSLv3");
@@ -55,7 +57,7 @@ public class PermissiveSocketFactory
 			}, new java.security.SecureRandom());
 
 			/*-------------------------------------------------------------*/
-			/* CREATE SSL FACTORY                                          */
+			/* CREATE FACTORY                                              */
 			/*-------------------------------------------------------------*/
 
 			tmp = sslContext.getSocketFactory();
@@ -70,11 +72,13 @@ public class PermissiveSocketFactory
 		m_sslSocketFactory = tmp;
 
 		/*-----------------------------------------------------------------*/
+		/* TLS                                                             */
+		/*-----------------------------------------------------------------*/
 
 		try
 		{
 			/*-------------------------------------------------------------*/
-			/* CREATE TLS CONTEXT                                          */
+			/* CREATE CONTEXT                                              */
 			/*-------------------------------------------------------------*/
 
 			SSLContext tlsContext = SSLContext.getInstance("TLSv1");
@@ -84,7 +88,7 @@ public class PermissiveSocketFactory
 			}, new java.security.SecureRandom());
 
 			/*-------------------------------------------------------------*/
-			/* CREATE TSL FACTORY                                          */
+			/* CREATE FACTORY                                              */
 			/*-------------------------------------------------------------*/
 
 			tmp = tlsContext.getSocketFactory();
