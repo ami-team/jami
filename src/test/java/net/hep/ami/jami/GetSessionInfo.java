@@ -13,6 +13,8 @@ public class GetSessionInfo
 			Client client = new Client("ami.in2p3.fr", "/AMI/servlet/net.hep.atlas.Database.Bookkeeping.AMI.Servlet.FrontEnd", 443);
 
 			System.out.println(client.execute("GetSessionInfo", new HashMap<String, String>()));
+
+			System.out.println("Cookie: " + client.getCookie());
 		}
 		catch(Exception e)
 		{

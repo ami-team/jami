@@ -15,11 +15,11 @@ import javax.net.ssl.*;
 
 public class Client
 {
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 
 	private SSLSocketFactory m_socketFactory;
 
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 
 	private final String m_tcfp   ;
 	private final String m_host   ;
@@ -27,11 +27,11 @@ public class Client
 	private final int    m_port   ;
 	private final int    m_timeout;
 
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 
 	private String m_cookie = "";
 
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 
 	/**
 	 * Initializes a new AMI client.
@@ -46,7 +46,7 @@ public class Client
 		this(host, path, port, null, null, 1500);
 	}
 
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 
 	/**
 	 * Initializes a new AMI client.
@@ -55,31 +55,28 @@ public class Client
 	 * @param port The AMI service port.
 	 * @param sessionName An arbitrary unique session name or null.
 	 * @param keyManagers The sources of authentication keys or null.
+	 * @param timeout The socket timeout, in milliseconds.
 	 * @throws Exception If unable to initialize the client.
 	 */
 
-	public Client(String host, String path, int port, String sessionName, KeyManager[] keyManagers, timeout) throws Exception
+	public Client(String host, String path, int port, String sessionName, KeyManager[] keyManagers, int timeout) throws Exception
 	{
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
 
-		String base = System.getProperty("os.name").startsWith("Windows") ? "%USER%\AppData\Local\Temp"
-		                                                                  : "/tmp"
-		;
+		m_tcfp = System.getProperty("user.home") + File.separator + ".ami.cookie." + (sessionName != null ? sessionName : "global");
 
-		m_tcfp = base + File.pathSeparator + "ami.cookie." + (sessionName != null ? sessionName : "global");
-
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
 
 		m_host    = host   ;
 		m_path    = path   ;
 		m_port    = port   ;
 		m_timeout = timeout;
 
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
 
 		PermissiveSocketFactory permissiveSocketFactory = new PermissiveSocketFactory(keyManagers);
 
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
 
 		m_socketFactory = permissiveSocketFactory.getTLSSocketFactory();
 
@@ -93,26 +90,20 @@ public class Client
 			}
 		}
 
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
 	}
 
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 
 	private String cookie(String value)
 	{
 		if(value == null)
 		{
-			BufferedReader bufferedReader = null;
-
 			try
 			{
-				bufferedReader = new BufferedReader(new FileReader(m_tcfp));
-
-				try {
+				try(BufferedReader bufferedReader = new BufferedReader(new FileReader(m_tcfp)))
+				{
 					value = bufferedReader.readLine();
-				}
-				finally {
-					bufferedReader.close();
 				}
 			}
 			catch(Exception e)
@@ -124,13 +115,9 @@ public class Client
 		{
 			try
 			{
-				BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(m_tcfp));
-
-				try {
+				try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(m_tcfp)))
+				{
 					bufferedWriter.write(value);
-				}
-				finally {
-					bufferedWriter.close();
 				}
 			}
 			catch(Exception e)
@@ -144,7 +131,7 @@ public class Client
 		return value;
 	}
 
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 
 	/**
 	 * Executes a command.
@@ -156,38 +143,38 @@ public class Client
 
 	public String execute(String command, Map<String, String> arguments) throws Exception
 	{
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 
-		/*-----------------------------------------------------------------*/
-		/* BUILD POST DATA                                                 */
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
+		/* BUILD POST DATA                                                                                            */
+		/*------------------------------------------------------------------------------------------------------------*/
 
-		StringBuffer argumentString = new StringBuffer();
+		StringBuilder argumentString = new StringBuilder();
 
 		for(Map.Entry<String, String> entry: arguments.entrySet())
 		{
 			argumentString.append(" -").append(entry.getKey()).append("=\"").append(entry.getValue().replace("\"", "\\\"")).append("\"");
 		}
 
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
 
 		String data = "Command=" + command + URLEncoder.encode(argumentString.toString(), "UTF-8") + "&Converter=AMIXmlToJson.xsl";
 
-		/*-----------------------------------------------------------------*/
-		/* BUILD HTTPS URL                                                 */
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
+		/* BUILD HTTPS URL                                                                                            */
+		/*------------------------------------------------------------------------------------------------------------*/
 
 		URL url = new URL("https://" + m_host + ":" + m_port + m_path);
 
-		/*-----------------------------------------------------------------*/
-		/* CONNECTION                                                      */
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
+		/* CONNECTION                                                                                                 */
+		/*------------------------------------------------------------------------------------------------------------*/
 
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
 		try
 		{
-			/*-------------------------------------------------------------*/
+			/*--------------------------------------------------------------------------------------------------------*/
 
 			connection.setRequestMethod("POST");
 
@@ -198,7 +185,7 @@ public class Client
 			connection.setRequestProperty("Connection", "Close");
 			connection.setRequestProperty("User-Agent", "jami");
 
-			/*-------------------------------------------------------------*/
+			/*--------------------------------------------------------------------------------------------------------*/
 
 			connection.setSSLSocketFactory(m_socketFactory);
 			connection.setConnectTimeout(m_timeout);
@@ -206,24 +193,16 @@ public class Client
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 
-			/*-------------------------------------------------------------*/
+			/*--------------------------------------------------------------------------------------------------------*/
 
-			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-
-			try
+			try(BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())))
 			{
 				bufferedWriter.write(data);
 			}
-			finally
-			{
-				bufferedWriter.close();
-			}
 
-			/*-------------------------------------------------------------*/
+			/*--------------------------------------------------------------------------------------------------------*/
 
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-			try
+			try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream())))
 			{
 				String line;
 
@@ -234,33 +213,29 @@ public class Client
 					;
 				}
 			}
-			finally
-			{
-				bufferedReader.close();
-			}
 
-			/*-------------------------------------------------------------*/
+			/*--------------------------------------------------------------------------------------------------------*/
 
 			cookie(connection.getHeaderField("Set-Cookie"));
 
-			/*-------------------------------------------------------------*/
+			/*--------------------------------------------------------------------------------------------------------*/
 		}
 		finally
 		{
 			connection.disconnect();
 		}
 
-		/*-----------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------------------*/
 
 		return result.toString();
 	}
 
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 
 	public String getCookie()
 	{
 		return m_cookie;
 	}
 
-	/*---------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
 }
