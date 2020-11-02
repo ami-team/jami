@@ -21,10 +21,15 @@ public class Client
 
 	/*---------------------------------------------------------------------*/
 
-	private final String m_tcfp;
-	private final String m_host;
-	private final String m_path;
-	private final int    m_port;
+	private final String m_tcfp   ;
+	private final String m_host   ;
+	private final String m_path   ;
+	private final int    m_port   ;
+	private final int    m_timeout;
+
+	/*---------------------------------------------------------------------*/
+
+	private String m_cookie = "";
 
 	/*---------------------------------------------------------------------*/
 
@@ -38,7 +43,7 @@ public class Client
 
 	public Client(String host, String path, int port) throws Exception
 	{
-		this(host, path, port, null, null);
+		this(host, path, port, null, null, 1500);
 	}
 
 	/*---------------------------------------------------------------------*/
@@ -53,15 +58,22 @@ public class Client
 	 * @throws Exception If unable to initialize the client.
 	 */
 
-	public Client(String host, String path, int port, String sessionName, KeyManager[] keyManagers) throws Exception
+	public Client(String host, String path, int port, String sessionName, KeyManager[] keyManagers, timeout) throws Exception
 	{
 		/*-----------------------------------------------------------------*/
 
-		m_tcfp = System.getProperty("java.io.tmpdir") + File.pathSeparator + "ami.cookie." + (sessionName != null ? sessionName : "global");
+		String base = System.getProperty("os.name").startsWith("Windows") ? "%USER%\AppData\Local\Temp"
+		                                                                  : "/tmp"
+		;
 
-		m_host = host;
-		m_path = path;
-		m_port = port;
+		m_tcfp = base + File.pathSeparator + "ami.cookie." + (sessionName != null ? sessionName : "global");
+
+		/*-----------------------------------------------------------------*/
+
+		m_host    = host   ;
+		m_path    = path   ;
+		m_port    = port   ;
+		m_timeout = timeout;
 
 		/*-----------------------------------------------------------------*/
 
@@ -127,6 +139,8 @@ public class Client
 			}
 		}
 
+		m_cookie = value;
+
 		return value;
 	}
 
@@ -187,8 +201,8 @@ public class Client
 			/*-------------------------------------------------------------*/
 
 			connection.setSSLSocketFactory(m_socketFactory);
-			connection.setConnectTimeout(1500);
-			connection.setReadTimeout(1500);
+			connection.setConnectTimeout(m_timeout);
+			connection.setReadTimeout(m_timeout);
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 
@@ -239,6 +253,13 @@ public class Client
 		/*-----------------------------------------------------------------*/
 
 		return result.toString();
+	}
+
+	/*---------------------------------------------------------------------*/
+
+	public String getCookie()
+	{
+		return m_cookie;
 	}
 
 	/*---------------------------------------------------------------------*/
